@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'movie',
 ]
 
@@ -123,3 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = '/home/sg/wxmovie/static'
+
+CRONJOBS = [
+    ('31 20 * * *', 'movie.utils.get_movie_from_friok2','>>/home/sg/wxmovie/movie/cron.log')
+]
