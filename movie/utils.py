@@ -25,7 +25,7 @@ header = {
 def get_movie_from_friok(page = 1):
     host = 'http://www.friok.com/category/gaoq/page/{0}'.format(page)
     try:
-        wb = requests.get(host,headers = header).content
+        wb = requests.get(host,headers = header,timeout=10).content
         soup = BeautifulSoup(wb,'html5lib')
     except BaseException as e:
         print('访问出错:',e)
@@ -41,24 +41,26 @@ def get_movie_from_friok(page = 1):
 
         try:
             down_data = requests.get(down_url,headers = header).content
+        
+            try:    
+                dsoup = BeautifulSoup(down_data,'html5lib')
+                name = dsoup.title.get_text()[:-4]
+                link = dsoup.select_one('div.list > a').get('href')
+                passwd = dsoup.select('div.desc > p')[1].get_text().split(': ')[-1]
+                result = Movie.objects.get_or_create(
+                    title = name,
+                    link = link,
+                    passwd = passwd
+                )
+                print('[*]完成数据写入:',name,link,passwd)
+            except Exception as e:
+                print('[-]数据写入错误',e)
+                continue
         except BaseException as e:
             print('[-]数据下载出错',e)
             continue
 
-        try:    
-            dsoup = BeautifulSoup(down_data,'html5lib')
-            name = dsoup.title.get_text()[:-4]
-            link = dsoup.select_one('div.list > a').get('href')
-            passwd = dsoup.select('div.desc > p')[1].get_text().split(': ')[-1]
-            result = Movie.objects.get_or_create(
-                title = name,
-                link = link,
-                passwd = passwd
-            )
-            print('[*]完成数据写入:',name,link,passwd)
-        except Exception as e:
-            print('[-]数据写入错误',e)
-            continue
+
     
 if __name__ == '__main__':
     #get_movie_from_friok()
