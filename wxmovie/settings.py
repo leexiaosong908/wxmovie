@@ -126,5 +126,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/home/sg/wxmovie/static'
 
 CRONJOBS = [
-    ('31 20 * * *', 'movie.utils.get_movie_from_friok2','>>/home/sg/wxmovie/movie/cron.log')
+    ('40 20 * * *', 'movie.utils.get_movie_from_friok2','>>/home/sg/wxmovie/movie/cron.log')
 ]
