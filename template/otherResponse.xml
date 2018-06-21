@@ -1,0 +1,9 @@
+<xml>
+<ToUserName><![CDATA[{{ fromUser }}]]></ToUserName>
+<FromUserName><![CDATA[{{ toUser }}]]></FromUserName>
+<CreateTime>{{ date }}</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[
+	因公众号搜索电影功能测试，关键字自动回复获取资料暂时关闭，预计6月中旬恢复，如有不便，敬请谅解！
+	]]></Content>
+</xml>

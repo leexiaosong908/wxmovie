@@ -1,0 +1,9 @@
+<xml>
+<ToUserName><![CDATA[{{ fromUser }}]]></ToUserName>
+<FromUserName><![CDATA[{{ toUser }}]]></FromUserName>
+<CreateTime>{{ date }}</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA[
+	对不起，暂时没有查询到相关电影资源^ ^!——州小秘
+	]]></Content>
+</xml>
