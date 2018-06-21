@@ -38,9 +38,11 @@ def get_movie_from_friok(page = 1):
     video_list = []
     for n in nums_list:
         down_url = 'http://www.friok.com/download.php?id='+n
+
         try:
             down_data = requests.get(down_url,headers = header).content
         except BaseException as e:
+            print('[-]数据下载出错',e)
             continue
 
         try:    
@@ -53,7 +55,6 @@ def get_movie_from_friok(page = 1):
                 link = link,
                 passwd = passwd
             )
-            #print(name,link,passwd)
             print('[*]完成数据写入:',name,link,passwd)
         except Exception as e:
             print('[-]数据写入错误',e)
@@ -61,6 +62,6 @@ def get_movie_from_friok(page = 1):
     
 if __name__ == '__main__':
     #get_movie_from_friok()
-    for i in range(45,121):
+    for i in range(52,121):
         print('当前第{}页'.format(i))
         get_movie_from_friok(page=i)
