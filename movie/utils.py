@@ -5,6 +5,10 @@ from bs4 import BeautifulSoup
 import sys
 import os
 import time
+import schedule
+import threading
+from datetime import datetime as dt
+
 from django.core.wsgi import get_wsgi_application
 sys.path.extend(['/home/sg/wxmovie',])
 os.environ.setdefault('DJANGO_SETTINGS_MODULE','wxmovie.settings')
@@ -22,6 +26,11 @@ header = {
     'Host':'www.friok.com',
     'Referer':'http://www.friok.com/'
 }
+def print_file(pstr):
+    with open('dump.log','a') as f:
+        dts = dt.now().strftime('%Y%m%d %H:%M:%S:%f')
+        pstr = '%s %s'%(dts, pstr)
+        print(pstr,file = f)
 
 def get_movie_from_friok2():
     list_urls = []
@@ -38,6 +47,7 @@ def get_movie_from_friok2():
     # 生成列表页的url
     for page in range(1,pagemax):
         #if page % 2 == 0:
+        
         host = 'http://www.friok.com/category/gaoq/page/{0}'.format(page)
         list_urls.append(host)
     #print(list_urls)
@@ -70,7 +80,9 @@ def get_movie_from_friok2():
 
     # 获取资源id
     while len(list_urls) > 0:
-        print('获取:%d 剩余:%d页'%(len(detail_ids),len(list_urls)))
+        with open('utils.log','a') as f:
+            dts = dt.now().strftime('%Y%m%d %H:%M:%S:%f')
+            print('%s 获取:%d 剩余:%d页'%(dts, len(detail_ids), len(list_urls)),file=f)
         try:
             url = list_urls[-1]
             detail = requests.get(url,headers = header,timeout=20).content
@@ -159,10 +171,17 @@ def get_movie_from_friok(page = 1):
             continue
 
 
-    
+def task_friok():
+    threading.Thread(target=get_movie_from_friok2).start()
+
 if __name__ == '__main__':
     #get_movie_from_friok()
     # for i in range(52,121):
     #     print('当前第{}页'.format(i))
     #     get_movie_from_friok(page=i)
-    get_movie_from_friok2()
+
+    schedule.every().day.at("21:27").do(task_friok)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+    
