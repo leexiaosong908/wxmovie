@@ -57,9 +57,10 @@ def get_movie_from_friok(page = 1):
             print('[*]完成数据写入:',name,link,passwd)
         except Exception as e:
             print('[-]数据写入错误',e)
+            continue
     
 if __name__ == '__main__':
     #get_movie_from_friok()
-    for i in range(1,121):
+    for i in range(45,121):
         print('当前第{}页'.format(i))
         get_movie_from_friok(page=i)
