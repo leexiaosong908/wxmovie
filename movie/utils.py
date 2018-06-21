@@ -180,7 +180,7 @@ if __name__ == '__main__':
     #     print('当前第{}页'.format(i))
     #     get_movie_from_friok(page=i)
 
-    schedule.every().day.at("21:27").do(task_friok)
+    schedule.every().day.at("10:30").do(task_friok)
     while True:
         schedule.run_pending()
         time.sleep(1)
